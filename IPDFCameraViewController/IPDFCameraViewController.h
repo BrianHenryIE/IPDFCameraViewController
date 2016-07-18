@@ -17,6 +17,9 @@ typedef NS_ENUM(NSInteger,IPDFCameraViewType)
 
 @interface IPDFCameraViewController : UIView
 
++ (BOOL)hasFrontCamera;
++ (BOOL)hasRearCamera;
+
 - (void)setupCameraView;
 - (void)setupCameraView:(AVCaptureDevicePosition)position orientation:(AVCaptureVideoOrientation)orientation;
 
@@ -26,8 +29,6 @@ typedef NS_ENUM(NSInteger,IPDFCameraViewType)
 @property (nonatomic,assign,getter=isBorderDetectionEnabled) BOOL enableBorderDetection;
 @property (nonatomic,assign,getter=isTorchEnabled) BOOL enableTorch;
 
-@property (nonatomic, readonly) BOOL hasFrontCamera;
-@property (nonatomic, readonly) BOOL hasRearCamera;
 @property (nonatomic, readonly) AVCaptureDevicePosition captureDevicePosition;
 
 @property (nonatomic,assign) IPDFCameraViewType cameraViewType;
