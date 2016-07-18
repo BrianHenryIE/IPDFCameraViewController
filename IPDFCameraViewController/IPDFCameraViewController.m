@@ -91,12 +91,45 @@
     _coreImageContext = [CIContext contextWithEAGLContext:self.context options:@{ kCIContextWorkingColorSpace : [NSNull null],kCIContextUseSoftwareRenderer : @(NO)}];
 }
 
++ (BOOL)hasFrontCamera {
+    for(AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo])
+    {
+        if(device.position == AVCaptureDevicePositionFront)
+        {
+            return YES;
+        }
+    }
+
+    return NO;
+}
+
++ (BOOL)hasRearCamera {
+    for(AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo])
+    {
+        if(device.position == AVCaptureDevicePositionBack)
+        {
+            return YES;
+        }
+    }
+
+    return NO;
+}
+
 - (void)setupCameraView
 {
+    [self setupCameraView:AVCaptureDevicePositionBack orientation:AVCaptureVideoOrientationPortrait];
+}
+
+- (void)setupCameraView:(AVCaptureDevicePosition)position orientation:(AVCaptureVideoOrientation)orientation
+{
+    if(position != AVCaptureDevicePositionBack && position != AVCaptureDevicePositionFront)
+    {
+        position = AVCaptureDevicePositionBack;
+    }
+
     [self createGLKView];
-    
-    NSArray *possibleDevices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    AVCaptureDevice *device = [possibleDevices firstObject];
+
+    AVCaptureDevice *device = [IPDFCameraViewController cameraWithPosition:position];
     if (!device) return;
     
     _imageDedectionConfidence = 0.0;
@@ -121,7 +154,7 @@
     [session addOutput:self.stillImageOutput];
     
     AVCaptureConnection *connection = [dataOutput.connections firstObject];
-    [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+    [connection setVideoOrientation:orientation];
     
     if (device.isFlashAvailable)
     {
@@ -138,6 +171,11 @@
     }
     
     [session commitConfiguration];
+}
+
+- (AVCaptureDevicePosition)captureDevicePosition
+{
+    return self.captureDevice.position;
 }
 
 - (void)setCameraViewType:(IPDFCameraViewType)cameraViewType
@@ -520,6 +558,16 @@ void saveCGImageAsJPEGToFilePath(CGImageRef imageRef, NSString *filePath)
 BOOL rectangleDetectionConfidenceHighEnough(float confidence)
 {
     return (confidence > 1.0);
+}
+
++ (AVCaptureDevice *)cameraWithPosition:(AVCaptureDevicePosition) position {
+    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    for(AVCaptureDevice *device in devices) {
+        if([device position] == position) {
+            return device;
+        }
+    }
+    return nil;
 }
 
 @end
