@@ -297,6 +297,11 @@
     [self hideGLKView:YES completion:nil];
 }
 
+- (BOOL)currentDeviceHasTorch
+{
+    return [self.captureDevice hasTorch];
+}
+
 - (void)setEnableTorch:(BOOL)enableTorch
 {
     _enableTorch = enableTorch;

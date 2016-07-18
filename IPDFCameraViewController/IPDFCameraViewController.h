@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger,IPDFCameraViewType)
 - (void)stop;
 
 @property (nonatomic,assign,getter=isBorderDetectionEnabled) BOOL enableBorderDetection;
+@property (nonatomic, readonly) BOOL currentDeviceHasTorch;
 @property (nonatomic,assign,getter=isTorchEnabled) BOOL enableTorch;
 
 @property (nonatomic, readonly) AVCaptureDevicePosition captureDevicePosition;
