@@ -36,6 +36,7 @@ typedef NS_ENUM(NSInteger,IPDFCameraViewType)
 
 - (void)focusAtPoint:(CGPoint)point completionHandler:(void(^)())completionHandler;
 
+- (void)captureAsUIImageWithCompletionHander:(void(^)(UIImage *image))completionHandler;
 - (void)captureImageWithCompletionHander:(void(^)(NSString *imageFilePath))completionHandler;
 
 @end
