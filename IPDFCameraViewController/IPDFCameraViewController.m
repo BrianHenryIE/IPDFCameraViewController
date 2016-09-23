@@ -468,11 +468,7 @@
 
         [UIImageJPEGRepresentation(image, 1.0) writeToFile:filePath atomically:YES];
 
-        dispatch_async(dispatch_get_main_queue(), ^
-                       {
-                           completionHandler(filePath);
-                           dispatch_resume(_captureQueue);
-                       });
+        completionHandler(filePath);
     }];
 
 }
